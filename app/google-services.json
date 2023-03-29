@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "51712474369",
+    "project_id": "projectpiseas",
+    "storage_bucket": "projectpiseas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51712474369:android:aba3254a0b86f1377def00",
+        "android_client_info": {
+          "package_name": "com.example.geofenceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51712474369-93j1ctkr1tc2kefapakkhp0sebusrr5f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.geofenceapp",
+            "certificate_hash": "d27c175100ba5e7e20abd852c62a882b3cad45d4"
+          }
+        },
+        {
+          "client_id": "51712474369-tcbpadc5bu5oagqe2lam9hocbaj6ga19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPWjtV_ewP8zOol-0PCA7xC8R3QoHiKEk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51712474369-tcbpadc5bu5oagqe2lam9hocbaj6ga19.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
