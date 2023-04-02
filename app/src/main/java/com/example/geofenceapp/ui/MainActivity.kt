@@ -18,6 +18,9 @@ import com.google.android.gms.wearable.MessageApi
 import com.google.android.gms.wearable.MessageClient
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.nio.charset.StandardCharsets
@@ -39,14 +42,25 @@ private val TAG_MESSAGE_RECEIVED: String = "receive1"
 
 private var messageEvent: MessageEvent? = null
 private var wearableNodeUri: String? = null
+
+private lateinit var databaseref: DatabaseReference
+private lateinit var mFirebase: FirebaseDatabase
+
+
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), MessageClient.OnMessageReceivedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        FirebaseApp.initializeApp(this)
         activityContext = this
         wearableDeviceConnected = false
+
+
+
+
+
 
         if (!wearableDeviceConnected) {
             val tempAct: Activity = activityContext as MainActivity
@@ -83,6 +97,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Message
                 "Heart Rate: " + s,
                 Toast.LENGTH_SHORT
             ).show()
+            mFirebase = FirebaseDatabase.getInstance("https://projectpiseas-default-rtdb.europe-west1.firebasedatabase.app/")
+            databaseref = mFirebase.getReference("messages")
+            databaseref.push().setValue(s.toString())
+
             if (messageEventPath == APP_OPEN_WEARABLE_PAYLOAD_PATH) {
                 currentAckFromWearForAppOpenCheck = s
                 Log.d(

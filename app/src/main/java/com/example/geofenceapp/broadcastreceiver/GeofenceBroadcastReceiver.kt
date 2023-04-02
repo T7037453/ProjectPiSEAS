@@ -9,12 +9,21 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.geofenceapp.R
+import com.example.geofenceapp.data.GeofenceDao
+import com.example.geofenceapp.data.GeofenceDatabase
+import com.example.geofenceapp.data.GeofenceEntity
+import com.example.geofenceapp.data.GeofenceRepository
 import com.example.geofenceapp.util.Constants.NOTIFICATION_CHANNEL_ID
 import com.example.geofenceapp.util.Constants.NOTIFICATION_CHANNEL_NAME
 import com.example.geofenceapp.util.Constants.NOTIFICATION_ID
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
+private lateinit var databaseref: DatabaseReference
+private lateinit var mFirebase: FirebaseDatabase
 
 class GeofenceBroadcastReceiver: BroadcastReceiver() {
 
@@ -26,15 +35,36 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
             Log.e("BroadcastReceiver", errorMessage)
             return
         }
-
         when(geofencingEvent.geofenceTransition){
             Geofence.GEOFENCE_TRANSITION_ENTER -> {
-                Log.d("BroadcastReceiver", "Geofence ENTER")
-                displayNotification(context, "Geofence ENTER")
+                mFirebase = FirebaseDatabase.getInstance("https://projectpiseas-default-rtdb.europe-west1.firebasedatabase.app/")
+                databaseref = mFirebase.getReference("messages")
+
+
+                if (geofencingEvent.triggeringLocation.latitude > 54.7 && geofencingEvent.triggeringLocation.latitude < 54.8){
+                    Log.d("BroadcastReceiver", "Geofence ENTER HOME")
+                    displayNotification(context, "Geofence ENTER HOME")
+                    databaseref.push().setValue("ENTER HOME")
+                }
+                else{
+                    Log.d("BroadcastReceiver", "Geofence ENTER")
+                    displayNotification(context, "Geofence ENTER")
+                    databaseref.push().setValue("ENTER")
+                }
             }
             Geofence.GEOFENCE_TRANSITION_EXIT -> {
-                Log.d("BroadcastReceiver", "Geofence EXIT")
-                displayNotification(context, "Geofence EXIT")
+                if (geofencingEvent.triggeringLocation.latitude > 54.7 && geofencingEvent.triggeringLocation.latitude < 54.8){
+                    Log.d("BroadcastReceiver", "Geofence EXIT HOME")
+                    displayNotification(context, "Geofence EXIT HOME")
+                    databaseref.push().setValue("EXIT HOME")
+                }
+                else{
+                    Log.d("BroadcastReceiver", "Geofence EXIT")
+                    displayNotification(context, "Geofence EXIT")
+                    databaseref.push().setValue("EXIT")
+                }
+
+
             }
             Geofence.GEOFENCE_TRANSITION_DWELL -> {
                 Log.d("BroadcastReceiver", "Geofence DWELL")
