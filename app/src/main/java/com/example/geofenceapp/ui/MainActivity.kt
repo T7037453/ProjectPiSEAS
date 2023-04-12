@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope(), Message
             ).show()
             mFirebase = FirebaseDatabase.getInstance("https://projectpiseas-default-rtdb.europe-west1.firebasedatabase.app/")
             databaseref = mFirebase.getReference("messages")
-            databaseref.push().setValue(s.toString())
+            databaseref.push().setValue(s.toDouble())
 
             if (messageEventPath == APP_OPEN_WEARABLE_PAYLOAD_PATH) {
                 currentAckFromWearForAppOpenCheck = s
